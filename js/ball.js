@@ -1,5 +1,5 @@
 function Ball(I) {
-    I.x = 240;
+    I.x = 220;
     I.y = -40;
     I.r = 20;
 

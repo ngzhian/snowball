@@ -51,6 +51,16 @@ var ball = Ball({});
 var score
 
 function update(dt) { 
+    handleInput();
+    trees.forEach(function(tree) { tree.update(dt); });
+    ball.update(dt);
+    camera.update(dt);
+    // update entities
+    // handle collision
+    // update score
+}
+
+function handleInput() {
     if (keydown.left) {
         camera.x--;
         ball.x--;
@@ -59,13 +69,6 @@ function update(dt) {
         camera.x++;
         ball.x++;
     }
-    trees.forEach(function(tree) { tree.update(dt); });
-    ball.update(dt);
-    camera.update(dt);
-    // handle input
-    // update entities
-    // handle collision
-    // update score
 }
 
 function render() {
