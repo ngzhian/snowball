@@ -1,14 +1,15 @@
 function Ball(I) {
-    I.x = 100;
-    I.y = 200;
+    I.x = 240;
+    I.y = -40;
     I.r = 20;
 
-    I.update = function() {
+    I.update = function(dt) {
+        I.y -= dt * rollingSpeed;
     }
 
     I.draw = function() {
         canvas.fillStyle = "#dd6565";
-        camera.drawRect(this.x, this.y, 10, 10);
+        camera.drawRect(this.x, this.y, 50, 50);
     };
 
     return I;

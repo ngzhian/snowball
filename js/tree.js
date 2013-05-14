@@ -1,5 +1,5 @@
 function Tree(I) {
-    I.update = function() {
+    I.update = function(dt) {
     };
 
     I.draw = function() {

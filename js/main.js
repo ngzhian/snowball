@@ -1,26 +1,56 @@
+var requestAnimFrame = (function(){
+    return window.requestAnimationFrame       ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame    ||
+        window.oRequestAnimationFrame      ||
+        window.msRequestAnimationFrame     ||
+        function(callback){
+            window.setTimeout(callback, 1000 / 60);
+        };
+})();
+
 var CANVAS_WIDTH = 480;
 var CANVAS_HEIGHT = 320;
+var canvas = jQuery('canvas').attr('width', CANVAS_WIDTH)
+                            .attr('height', CANVAS_HEIGHT)
+                            .get(0).getContext("2d");
+var lastTime;
 
-var canvasElement = jQuery("<canvas width='" + CANVAS_WIDTH +
-        "' height='" + CANVAS_HEIGHT + "'></canvas>");
-var canvas = canvasElement.get(0).getContext("2d");
-canvasElement.appendTo('body');
+resources.load([
+        'img/bg.jpg'
+        ]);
+resources.onReady(init);
 
+function init() {
+    lastTime = Date.now();
+    main();
+}
+
+function main() {
+    var now = Date.now();
+    var dt = (now - lastTime) / 1000.0;
+
+    update(dt);
+    render();
+
+    lastTime = now;
+    requestAnimFrame(main);
+};
+
+
+//setInterval(function() { update(); draw(); }, 1000/FPS);
 var FPS = 30;
-setInterval(function() { update(); draw(); }, 1000/FPS);
-
-var rollingSpeed = 3;
-
+var rollingSpeed = 100;
 var trees = []
-trees.push(Tree({x:90, y:10}), Tree({x:200, y:100}));
-
+trees.push(Tree({x:90, y:-290}), Tree({x:200, y:-390}));
 var delta_x = 5;
 var delta_y = 5;
-
 var camera = Camera({});
+var field = Field({src: "img/bg.jpg"});
 var ball = Ball({});
+var score
 
-function update() { 
+function update(dt) { 
     if (keydown.left) {
         camera.x--;
         ball.x--;
@@ -29,10 +59,17 @@ function update() {
         camera.x++;
         ball.x++;
     }
+    trees.forEach(function(tree) { tree.update(dt); });
+    ball.update(dt);
+    camera.update(dt);
+    // handle input
+    // update entities
+    // handle collision
+    // update score
 }
 
-function draw() {
-    canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    ball.draw();
+function render() {
+    field.draw();
     trees.forEach(function(tree) { tree.draw(); });
+    ball.draw();
 }
