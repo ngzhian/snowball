@@ -1,31 +1,58 @@
+/* Translates game world coordinates into
+ * screen coordinates to be painted by renderer.
+ * The coordinates returned by camera is in the
+ * 2 dimensional Cartesian coordinate system, i.e.
+ * -----------------------------
+ * |             |             |
+ * |  (-4,1) x   |(0,0)        |
+ * |-------------x-------------|
+ * |             |  x (3,-1)   |
+ * |             |             |
+ * -----------------------------
+ * It is the job of the renderer to translate this system
+ * into the HTML5 Canvas system.
+ */
 function Camera(I) {
-    I.x = 0;
-    I.y = 0;
+    I.deltay = I.depth * Math.tan(I.angle);
 
-    function convertX(x) {
-        return x - I.x;
-    }
-    function convertY(y) {
-        return CANVAS_HEIGHT - (I.y - y);
-    }
-
-    I.inView = function(x, y) {
-        return x > I.x && x < I.x+CANVAS_WIDTH &&
-            y < I.y && y > I.y - CANVAS_HEIGHT;
+    I.scale = function(l, z) {
+        r_z = z - this.p.z;
+        s = camera.depth / r_z;
+        //if (s > 0.9) console.log('1');
+        return s*l;
     }
 
-    I.drawRect = function(x, y, w, h) {
-        if (I.inView(x, y)) {
-            canvas.fillRect(convertX(x), convertY(y), w, h);
-        }
-    }
+    I.translatePoint = function(p) {
+        point = {};
+        // get coords relative to camera
+        r_x = p.x - this.p.x;
+        r_y = p.y - this.p.y;
+        r_z = p.z - this.p.z;
+        s = this.depth / r_z;
+        // project coordinates to (0, CANVAS_HEIGHT + I.deltay)
+        s_x = r_x * s;
+        s_y = r_y * s;
+        // subtract delta due to angled camera
+        point.x = s_x;
+        point.y = s_y + this.deltay;
 
-    I.drawImg = function(src) {
-        canvas.drawImage(resources.get(src), 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        pdeb('orig p:('+this.p.x+','+this.p.y+','+this.p.z+')'+
+                    ' rel p:('+r_x+','+r_y+','+r_z+')' +
+                        ' s:'+s+'scaled p:('+s_x+','+s_y+')' +
+                            ' screen p:(' +point.x+','+point.y+')');
+        return point;
     }
 
     I.update = function(dt) {
-        I.y -= dt * rollingSpeed;
+        this.p.y -= dt * rollingSpeed;
+        this.p.z += dt * rollingSpeed;
+    }
+
+    I.goLeft = function(dt) {
+        this.p.x -= (dt * sideSpeed);
+    }
+    I.goRight = function(dt) {
+        this.p.x += dt * sideSpeed;
     }
 
     return I;

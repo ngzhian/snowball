@@ -3,7 +3,7 @@ function Field(I) {
     I.height = 1280;
 
     I.draw = function() {
-        camera.drawImg(I.src, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        renderer.drawBackground(this.src);
     }
     
     return I;

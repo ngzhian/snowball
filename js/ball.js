@@ -1,16 +1,21 @@
 function Ball(I) {
-    I.x = 220;
-    I.y = -40;
-    I.r = 20;
 
     I.update = function(dt) {
-        I.y -= dt * rollingSpeed;
+        I.p.y -= dt * rollingSpeed;
+        I.p.z += dt * rollingSpeed;
     }
 
     I.draw = function() {
-        canvas.fillStyle = "#dd6565";
-        camera.drawRect(this.x, this.y, 50, 50);
-    };
+        renderer.drawImage(this.p,
+                200, 200, 'img/snowball1.png');
+    }
+
+    I.goLeft = function(dt) {
+        this.p.x -= dt * sideSpeed;
+    }
+    I.goRight = function(dt) {
+        this.p.x += dt * sideSpeed;
+    }
 
     return I;
 }
