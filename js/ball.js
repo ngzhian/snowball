@@ -15,7 +15,7 @@ function Ball(I) {
     }
 
     I.draw = function() {
-        renderer.drawSprite(this.sprite, this.p, 200, 200, this.sprite.url);
+        renderer.drawSprite(this.sprite, this.p, 150, 150);
     }
 
     I.goLeft = function(dt) {

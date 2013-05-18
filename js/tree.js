@@ -9,13 +9,21 @@
  * d itself is a function of tree.x and ball.x
  */
 function Tree(I) {
+    I.sprite = Sprite({
+        url: 'img/tree-sprite.png',
+        pos: {x: 0, y: 0},
+        size: {w: 118, h: 200},
+        frames: [0, 1, 0, 2],
+        rate: 3,
+        index: 0
+    });
 
     I.update = function(dt) {
+        this.sprite.update(dt);
     };
 
     I.draw = function() {
-        ctx.fillStyle = "#3232ee";
-        renderer.drawRect(I.p, I.w, I.h);
+        renderer.drawSprite(this.sprite, this.p, 118, 200);
     };
 
     return I;
