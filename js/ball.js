@@ -1,17 +1,26 @@
 function Ball(I) {
+    I.sprite = Sprite({
+        url: 'img/ball-sprite.png',
+        pos: {x: 0, y: 0},
+        size: {w: 100, h: 75},
+        frames: [3, 2, 1, 0],
+        rate: 10,
+        index: 0
+    });
 
     I.update = function(dt) {
-        I.p.y -= dt * rollingSpeed;
-        I.p.z += dt * rollingSpeed;
+        this.sprite.update(dt)
+        this.p.y -= dt * rollingSpeed;
+        this.p.z += dt * rollingSpeed;
     }
 
     I.draw = function() {
-        renderer.drawImage(this.p,
-                200, 200, 'img/snowball1.png');
+        renderer.drawSprite(this.sprite, this.p, 200, 200, this.sprite.url);
     }
 
     I.goLeft = function(dt) {
-        this.p.x -= dt * sideSpeed;
+        x = this.p.x - dt*sideSpeed;
+        this.p.x = x;
     }
     I.goRight = function(dt) {
         this.p.x += dt * sideSpeed;

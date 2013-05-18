@@ -23,6 +23,7 @@ function Camera(I) {
     }
 
     I.translatePoint = function(p) {
+        I.deltay = I.depth * Math.tan(I.angle);
         point = {};
         // get coords relative to camera
         r_x = p.x - this.p.x;
@@ -36,10 +37,12 @@ function Camera(I) {
         point.x = s_x;
         point.y = s_y + this.deltay;
 
+        /*
         pdeb('orig p:('+this.p.x+','+this.p.y+','+this.p.z+')'+
                     ' rel p:('+r_x+','+r_y+','+r_z+')' +
                         ' s:'+s+'scaled p:('+s_x+','+s_y+')' +
                             ' screen p:(' +point.x+','+point.y+')');
+                            */
         return point;
     }
 
@@ -49,7 +52,8 @@ function Camera(I) {
     }
 
     I.goLeft = function(dt) {
-        this.p.x -= (dt * sideSpeed);
+        this.p.x -= dt*sideSpeed;
+        //pdeb(this.p.x);
     }
     I.goRight = function(dt) {
         this.p.x += dt * sideSpeed;
