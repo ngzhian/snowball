@@ -30,10 +30,28 @@ resources.load([
         'img/bg with view.jpg',
         'img/snowball1.png',
         'img/ball-sprite.png',
-        'img/tree-sprite.png'
+        'img/tree-sprite.png',
+        'img/paranmic.jpg',
+        'img/snowballground.png'
         ]);
 resources.onReady(init);
 
+var pause = true;
+var rollingSpeed = 0200;
+var sideSpeed = 1000;
+var renderer = Renderer({});
+var camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
+var trees = []
+trees.push(Tree({p: {x:190, y:-1120, z: 1120}, w: 50, h: 640}));
+trees.push(Tree({p: {x:-190, y:-2400, z: 2400}, w: 50, h: 640}));
+trees.push(Tree({p: {x:-190, y:-3300, z: 3300}, w: 50, h: 640}));
+trees.push(Tree({p: {x:-290, y:-6000, z: 6000}, w: 50, h: 640}));
+trees.push(Tree({p: {x:-190, y:-4000, z: 4000}, w: 50, h: 640}));
+trees.push(Tree({p: {x:090, y:-1440, z: 1440}, w: 50, h: 640}));
+var ball = Ball({p: {x: 0, y: -530, z: 310}, w: 150, h: 150});
+var field = Field({src: "img/bg with view.jpg"});
+var score;
+var pauseScreenSelections = [true, false];
 function init() {
     lastTime = Date.now();
     main();
@@ -50,29 +68,19 @@ function main() {
     requestAnimFrame(main);
 };
 
-var rollingSpeed = 0200;
-var sideSpeed = 1000;
-var renderer = Renderer({});
-var camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
-var trees = []
-trees.push(Tree({p: {x:190, y:-1120, z: 1120}, w: 50, h: 640}));
-trees.push(Tree({p: {x:-190, y:-2400, z: 2400}, w: 50, h: 640}));
-trees.push(Tree({p: {x:-190, y:-3300, z: 3300}, w: 50, h: 640}));
-trees.push(Tree({p: {x:-290, y:-6000, z: 6000}, w: 50, h: 640}));
-trees.push(Tree({p: {x:-190, y:-4000, z: 4000}, w: 50, h: 640}));
-trees.push(Tree({p: {x:090, y:-1440, z: 1440}, w: 50, h: 640}));
-var ball = Ball({p: {x: 0, y: -530, z: 310}, w: 150, h: 150});
-var field = Field({src: "img/bg with view.jpg"});
-var score;
 
 function update(dt) { 
     handleInput(dt);
-    trees.forEach(function(tree) { tree.update(dt); });
-    ball.update(dt);
-    camera.update(dt);
+    if (!pause) {
+        trees.forEach(function(tree) { tree.update(dt); });
+        ball.update(dt);
+        camera.update(dt);
     // update entities
     // handle collision
     // update score
+    } else {
+        //pause;
+    }
 }
 
 function handleInput(dt) {
@@ -84,9 +92,17 @@ function handleInput(dt) {
         ball.goRight(dt);
         camera.goRight(dt);
     }
+    if (keydown.down) {
+        selectNextMenuItem();
+    }
+    if (keydown.up) {
+    }
 }
 
 function render() {
+    if (pause) {
+        drawPauseScreen();
+    }
     ctx.clearRect(0, 0, 480, 320);
     field.draw();
     trees.forEach(function(tree) { tree.draw(); });
