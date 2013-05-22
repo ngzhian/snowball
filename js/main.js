@@ -61,20 +61,26 @@ trees.push(Tree({p: {x:-190, y:-3300, z: 3300}, w: 50, h: 640}));
 trees.push(Tree({p: {x:-290, y:-6000, z: 6000}, w: 50, h: 640}));
 trees.push(Tree({p: {x:-190, y:-4000, z: 4000}, w: 50, h: 640}));
 trees.push(Tree({p: {x:090, y:-1440, z: 1440}, w: 50, h: 640}));
+trees.push(Tree({p: {x:000, y:-8000, z: 8000}, w:50, h:640}));
 var ball = Ball({p: {x: 0, y: -530, z: 310}, w: 150, h: 150});
 var field = Field({src: "img/bg with view.jpg"});
 var score;
+var prevX=0;
+var prevY=0;
+var prevZ=0;
 
 function update(dt) { 
     handleInput(dt);
     trees.forEach(function(tree) { tree.update(dt); });
     ball.update(dt);
     camera.update(dt);
+
+	checkCollisionTree(ball,trees);
     // update entities
     // handle collision
     // update score
-}
 
+}
 function handleInput(dt) {
     if (keydown.left) {
         ball.goLeft(dt);
