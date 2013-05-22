@@ -13,7 +13,7 @@ function Renderer(I) {
         return {x: x, y: y};
     }
 
-    I.drawRect = function(p, w, h) {
+    I.drawRect = function(p, w, h, colour) {
         // don't draw if object is behind camera!
         // prevents divide by zero error in camera.translatePoint
         if (p.z < camera.p.z) return;
@@ -27,7 +27,28 @@ function Renderer(I) {
         c_h = camera.scale(h, p.z);
         tl_p = I.toTopLeft(canvas_point, c_w, c_h);
         //pdeb('print rect w:'+c_w+' h:'+c_h+' at ('+tl_p.x+','+tl_p.y+')');
-        ctx.fillRect(tl_p.x, tl_p.y, c_w, c_h);
+        ctx.beginPath();
+        ctx.rect(tl_p.x, tl_p.y, c_w, c_h);
+        ctx.fillStyle = colour;
+        ctx.fill();
+    }
+
+    I.drawRectWithBorder = function(p, w, h, colour) {
+        if (p.z < camera.p.z) return;
+        screen_point = camera.translatePoint(p);
+        canvas_point = this.screenToCanvas(screen_point);
+        c_w = camera.scale(w, p.z);
+        c_h = camera.scale(h, p.z);
+        tl_p = I.toTopLeft(canvas_point, c_w, c_h);
+        //pdeb('print rect w:'+c_w+' h:'+c_h+' at ('+tl_p.x+','+tl_p.y+')');
+        //ctx.fillRect(tl_p.x, tl_p.y, c_w, c_h);
+        ctx.beginPath();
+        ctx.rect(tl_p.x, tl_p.y, c_w, c_h);
+        ctx.fillStyle = colour;
+        ctx.fill();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = 'black';
+        ctx.stroke();
     }
 
     I.drawImage = function(p, w, h, src) {
@@ -55,7 +76,10 @@ function Renderer(I) {
     }
 
     I.drawBackground = function(src) {
-        ctx.drawImage(resources.get(src), 0, 0, CANVAS_WIDTH,
+        // quick fix
+        ctx.drawImage(resources.get('img/paranmic.jpg'), 0, 0, 3200, 1066,
+                0, -030, CANVAS_WIDTH*2, CANVAS_HEIGHT);
+        ctx.drawImage(resources.get('img/snowballground.png'), 0, 0, CANVAS_WIDTH,
             CANVAS_HEIGHT);
     }
 

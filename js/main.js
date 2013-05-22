@@ -1,20 +1,20 @@
 var requestAnimFrame = (function(){
     return window.requestAnimationFrame       ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame    ||
-        window.oRequestAnimationFrame      ||
-        window.msRequestAnimationFrame     ||
-        function(callback){
-            window.setTimeout(callback, 1000 / 60);
-        };
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame    ||
+    window.oRequestAnimationFrame      ||
+    window.msRequestAnimationFrame     ||
+    function(callback){
+        window.setTimeout(callback, 1000 / 60);
+    };
 })();
 
 var CANVAS_WIDTH = 480;
 var CANVAS_HEIGHT = 320;
 var ctx = jQuery('canvas').attr('width', CANVAS_WIDTH)
-                            .attr('height', CANVAS_HEIGHT)
-                            .css('border', '1px solid black')
-                            .get(0).getContext("2d");
+                        .attr('height', CANVAS_HEIGHT)
+                        .css('border', '1px solid black')
+                        .get(0).getContext("2d");
 var lastTime;
 var debug = false;
 
@@ -48,10 +48,15 @@ trees.push(Tree({p: {x:-190, y:-3300, z: 3300}, w: 50, h: 640}));
 trees.push(Tree({p: {x:-290, y:-6000, z: 6000}, w: 50, h: 640}));
 trees.push(Tree({p: {x:-190, y:-4000, z: 4000}, w: 50, h: 640}));
 trees.push(Tree({p: {x:090, y:-1440, z: 1440}, w: 50, h: 640}));
+trees.push(Tree({p: {x:000, y:-8000, z: 8000}, w:50, h:640}));
 var ball = Ball({p: {x: 0, y: -530, z: 310}, w: 150, h: 150});
 var field = Field({src: "img/bg with view.jpg"});
 var score;
 var pauseScreenSelections = [true, false];
+var prevX=0;
+var prevY=0;
+var prevZ=0;
+
 function init() {
     lastTime = Date.now();
     main();
@@ -68,16 +73,16 @@ function main() {
     requestAnimFrame(main);
 };
 
-
 function update(dt) { 
     handleInput(dt);
     if (!pause) {
         trees.forEach(function(tree) { tree.update(dt); });
         ball.update(dt);
         camera.update(dt);
-    // update entities
-    // handle collision
-    // update score
+        checkCollisionTree(ball,trees);
+        // update entities
+        // handle collision
+        // update score
     } else {
         //pause;
     }
