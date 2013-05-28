@@ -34,7 +34,10 @@ resources.load([
         'img/ball-sprite.png',
         'img/tree-sprite.png',
         'img/paranmic.jpg',
-        'img/snowballground.png'
+        'img/snowballground.png',
+        'img/instr.png',
+        'img/start.png',
+        'img/start-pressed.png'
         ]);
 resources.onReady(init);
 
@@ -44,17 +47,20 @@ var sideSpeed = 1000;
 var renderer = Renderer({});
 var camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
 var menu = Menu({});
-var trees = []
-trees.push(Tree({p: {x:190, y:-1120, z: 1120}, w: 50, h: 640}));
-trees.push(Tree({p: {x:-190, y:-2400, z: 2400}, w: 50, h: 640}));
-trees.push(Tree({p: {x:-190, y:-3300, z: 3300}, w: 50, h: 640}));
-trees.push(Tree({p: {x:-290, y:-6000, z: 6000}, w: 50, h: 640}));
-trees.push(Tree({p: {x:-190, y:-4000, z: 4000}, w: 50, h: 640}));
-trees.push(Tree({p: {x:090, y:-1440, z: 1440}, w: 50, h: 640}));
-trees.push(Tree({p: {x:000, y:-8000, z: 8000}, w:50, h:640}));
 var ball = Ball({p: {x: 0, y: -530, z: 310}, w: 150, h: 150});
+var trees = Trees({});
+/*
+trees.addTree(Tree({p: {x:190, y:-1120, z: 1120}, w: 50, h: 640}));
+trees.addTree(Tree({p: {x:-190, y:-2400, z: 2400}, w: 50, h: 640}));
+trees.addTree(Tree({p: {x:-190, y:-3300, z: 3300}, w: 50, h: 640}));
+trees.addTree(Tree({p: {x:-290, y:-6000, z: 6000}, w: 50, h: 640}));
+trees.addTree(Tree({p: {x:-190, y:-4000, z: 4000}, w: 50, h: 640}));
+trees.addTree(Tree({p: {x:090, y:-1440, z: 1440}, w: 50, h: 640}));
+trees.addTree(Tree({p: {x:000, y:-8000, z: 8000}, w:50, h:640}));
+*/
 var field = Field({src: "img/bg with view.jpg"});
 var input = Input({});
+var collision = Collision({});
 var score;
 var prevX = 0;
 var prevY = 0;
@@ -84,10 +90,10 @@ function main() {
 function update(dt) { 
     input.handleInput(dt);
     if (!paused) {
-        trees.forEach(function(tree) { tree.update(dt); });
+        trees.update(dt);
         ball.update(dt);
         camera.update(dt);
-        checkCollisionTree(ball,trees);
+        collision.checkCollisionTree(ball,trees);
         // update score
     } else {
         //paused;
@@ -97,7 +103,7 @@ function update(dt) {
 function render() {
     ctx.clearRect(0, 0, 480, 320);
     field.draw();
-    trees.forEach(function(tree) { tree.draw(); });
+    trees.draw();
     ball.draw();
     if (paused) {
         menu.draw();

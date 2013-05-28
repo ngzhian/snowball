@@ -1,77 +1,57 @@
 function Menu(I) {
-    I.options = [true, false];
+    I.options = [false];
     I.startButton = {
-        p: {
-            x: 0,
-            y: -210,
-            z: 310
-        },
-        w: 80,
-        h: 20,
-        colour: 'red',
-    }
-    I.quitButton = {
-        p: {
-            x: 0,
-            y: -310,
-            z: 310
-        },
-        w: 80,
-        h: 20,
-        colour: 'blue',
+        p: { x: 0, y: -210, z: 310 },
+        w: 200,
+        h: 60,
+        src: 'img/start.png',
+        srcSelected: 'img/start-pressed.png',
+        selected: false
     }
 
-    I.mouseInRect = function(mousePos, shape) {
+    I.instructions = {
+        p: { x: -200, y: -550, z: 310 },
+        w: 247,
+        h: 60,
+        src: 'img/instr.png',
+    }
+
+    I.mousedownOnStartButton = function(mousedownPosition) {
+        if (I.mouseIsOverButton(mousedownPosition, I.startButton)) {
+            return true;
+                }
+        return false;
+    }
+
+    I.mouseupOnStartButton = function(mouseupPosition) {
+        if (I.mouseIsOverButton(mouseupPosition, I.startButton)) {
+            return true;
+                }
+        return false;
+    }
+
+    I.mouseIsOverButton = function(mousePos, button) {
+        if (mousePos == undefined) {
+            return false;
+        }
         var canvasMid = renderer.screenToCanvas(
-                camera.translatePoint(shape.p));
-        return mousePos.x <= canvasMid.x + shape.w/2 &&
-            mousePos.x >= canvasMid.x - shape.w/2 &&
-            mousePos.y <= canvasMid.y + shape.h/2 &&
-            mousePos.y >= canvasMid.y - shape.h/2;
-    }
-
-    I.hoverOverStartButton = function(mouseCanvasPosition) {
-        var screenMidpoint = camera.translatePoint(I.startButton.p);
-        var canvasMidpoint = renderer.screenToCanvas(screenMidpoint);
-        if (I.mouseInRect(mouseCanvasPosition, I.startButton)) {
-            return true;
-                }
-        return false;
-    }
-
-    I.clickOnStartButton = function(mouseClickPosition) {
-        var screenMidpoint = camera.translatePoint(I.startButton.p);
-        var canvasMidpoint = renderer.screenToCanvas(screenMidpoint);
-        if (I.mouseInRect(mouseClickPosition, I.startButton)) {
-            return true;
-                }
-        return false;
-    }
-
-    I.hoverOverQuitButton = function(mouseCanvasPosition) {
-        var screenMidpoint = camera.translatePoint(I.quitButton.p);
-        var canvasMidpoint = renderer.screenToCanvas(screenMidpoint);
-        if (I.mouseInRect(mouseCanvasPosition, I.quitButton)) {
-            return true;
-                }
-        return false;
+                camera.translatePoint(button.p));
+        return mousePos.x <= canvasMid.x + button.w/2 &&
+            mousePos.x >= canvasMid.x - button.w/2 &&
+            mousePos.y <= canvasMid.y + button.h/2 &&
+            mousePos.y >= canvasMid.y - button.h/2;
     }
 
     I.setSelected = function(idx) {
+        if (idx >= I.options.length) {
+            idx -= I.options.length;
+        } else if (idx < 0) {
+            idx += I.options.length;
+        }
         for (var i = 0; i < I.options.length; i++) {
             I.options[i] = false;
         }
         I.options[idx] = true;
-    }
-
-    I.findIndexOfSelectedOption = function() {
-        var i = 0;
-        while (i < I.options.length) {
-            if (I.options[i] == true) {
-                return i;
-            }
-            i++
-        }
     }
 
     I.startGameSelected = function() {
@@ -79,36 +59,23 @@ function Menu(I) {
     }
 
     I.draw = function() {
-        I.drawResumeGame(I.options[0]);
-        I.drawNewGame(I.options[1]);
+        I.drawStartButton();
+        I.drawInstructions();
     }
 
-    I.drawResumeGame = function(selected) {
-        if (selected) {
-            renderer.drawRectWithBorder({x:0,y:-210,z:310},80,20, 'red');
+    I.drawStartButton = function() {
+        if (I.startButton.selected) {
+            renderer.drawImage(I.startButton.p, I.startButton.w,
+                    I.startButton.h, I.startButton.srcSelected);
         } else {
-            renderer.drawRect({x:0,y:-210,z:310},80,20, 'red');
+            renderer.drawImage(I.startButton.p, I.startButton.w,
+                    I.startButton.h, I.startButton.src);
         }
     }
 
-    I.drawNewGame = function(selected) {
-        if (selected) {
-            renderer.drawRectWithBorder({x:0,y:-310,z:310},80,20, 'blue');
-        } else {
-            renderer.drawRect({x:0,y:-310,z:310},80,20, 'blue');
-        }
-    }
-
-    I.selectNextMenuItem = function() {
-        var i = I.findIndexOfSelectedOption();
-        I.options[i] = false;
-        I.options[(i+1) % I.options.length] = true;
-    }
-
-    I.selectPreviousMenuItem = function() {
-        var i = I.findIndexOfSelectedOption();
-        I.options[i] = false;
-        I.options[(i-1+I.options.length) % I.options.length] = true;
+    I.drawInstructions = function() {
+        renderer.drawImage(I.instructions.p, I.instructions.w,
+                I.instructions.h, I.instructions.src);
     }
     
     return I;
