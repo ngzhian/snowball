@@ -49,6 +49,7 @@ var camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
 var menu = Menu({});
 var ball = Ball({p: {x: 0, y: -530, z: 310}, w: 150, h: 150});
 var trees = Trees({});
+var sound = Sound({});
 /*
 trees.addTree(Tree({p: {x:190, y:-1120, z: 1120}, w: 50, h: 640}));
 trees.addTree(Tree({p: {x:-190, y:-2400, z: 2400}, w: 50, h: 640}));
@@ -90,6 +91,7 @@ function main() {
 function update(dt) { 
     input.handleInput(dt);
     if (!paused) {
+		sounds.update(dt);
         trees.update(dt);
         ball.update(dt);
         camera.update(dt);

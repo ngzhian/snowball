@@ -39,6 +39,9 @@ function Input(I) {
                 menu.startButton.selected == true) {
             paused = false; 
         }
+		if(menu.mousedownOnMuteButton(I.mousedownPosition)) {
+			menu.muteButton.selected = !menu.muteButton.selected;
+		}
     }
 
     I.onKeydown = function(event) {

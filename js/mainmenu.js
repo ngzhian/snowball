@@ -15,6 +15,17 @@ function Menu(I) {
         h: 60,
         src: 'img/instr.png',
     }
+		I.muteButton = {
+		p: {
+			x: 300,
+			y: -550,
+			z:310
+		},
+		w: 100,
+		h: 100,
+		src: 'img/instr.png',
+		selected: false
+	}
 
     I.mousedownOnStartButton = function(mousedownPosition) {
         if (I.mouseIsOverButton(mousedownPosition, I.startButton)) {
@@ -59,9 +70,13 @@ function Menu(I) {
     }
 
     I.draw = function() {
-        I.drawStartButton();
-        I.drawInstructions();
-    }
+		if (paused == true) {
+			I.drawStartButton();
+			I.drawInstructions();
+		}
+		I.drawMuteButton();
+	}
+			
 
     I.drawStartButton = function() {
         if (I.startButton.selected) {
@@ -77,6 +92,10 @@ function Menu(I) {
         renderer.drawImage(I.instructions.p, I.instructions.w,
                 I.instructions.h, I.instructions.src);
     }
+	
+	I.drawMuteButton = function() {
+		ctx.drawImage(resources.get(I.muteButton.src), 300, 210, 100, 100);
+	}
     
     return I;
 }
