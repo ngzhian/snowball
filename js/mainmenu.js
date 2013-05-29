@@ -64,32 +64,39 @@ function Menu(I) {
     }
 
     I.draw = function() {
-		if (paused == true) {
-			I.drawStartButton();
-			I.drawInstructions();
-		}
-		I.drawMuteButton();
-	}
-			
+        if (paused == true) {
+            I.drawStartButton();
+            I.drawInstructions();
+        }
+        I.drawMuteButton();
+    }
+
 
     I.drawStartButton = function() {
-        if (I.startButton.selected) {
-            renderer.drawImage(I.startButton.p, I.startButton.w,
-                    I.startButton.h, I.startButton.srcSelected);
-        } else {
-            renderer.drawImage(I.startButton.p, I.startButton.w,
-                    I.startButton.h, I.startButton.src);
-        }
+        var src = I.startButton.selected ?
+            I.startButton.srcSelected : I.startButton.src;
+        ctx.drawImage(resources.get(src),
+                I.startButton.p.x,
+                I.startButton.p.y,
+                I.startButton.w,
+                I.startButton.h);
     }
 
     I.drawInstructions = function() {
-        renderer.drawImage(I.instructions.p, I.instructions.w,
-                I.instructions.h, I.instructions.src);
+        ctx.drawImage(resources.get(I.instructions.src),
+                I.instructions.p.x,
+                I.instructions.p.y,
+                I.instructions.w,
+                I.instructions.h);
     }
-	
-	I.drawMuteButton = function() {
-		ctx.drawImage(resources.get(I.muteButton.src), 300, 210, 100, 100);
-	}
-    
+
+    I.drawMuteButton = function() {
+        ctx.drawImage(resources.get(I.muteButton.src),
+                I.muteButton.p.x,
+                I.muteButton.p.y,
+                I.muteButton.w,
+                I.muteButton.h);
+    }
+
     return I;
 }
