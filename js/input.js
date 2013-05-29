@@ -7,13 +7,15 @@ function Input(I) {
         ENTER: 13
     }
     I.down = {};
-    I.mouseCanvasPosition = {};
-    I.mousedownPosition = {};
-    I.mouseupPosition = {};
+    I.mousePosition = {};
+    I.mousedownPosition;
+    I.mouseupPosition;
 
     I.handleInput = function(dt) {
-        input.handleKeyboardInput(dt);
-        input.handleMouseInput(dt);
+        if (!paused) {
+            input.handleKeyboardInput(dt);
+        }
+        //input.handleMouseInput(dt);
     }
 
     I.handleKeyboardInput = function(dt) {
@@ -34,14 +36,16 @@ function Input(I) {
     I.handleMouseInput = function(dt) {
         if (menu.mousedownOnStartButton(I.mousedownPosition)) {
             menu.startButton.selected = true;        
+        } else if (menu.mousedownOnMuteButton(I.mousedownPosition)) {
+            menu.muteButton.selected = !menu.muteButton.selected;
+            sounds.toggleSound();
+        } else if (menu.mouseupOnStartButton(I.mouseupPosition)) {
+            if (menu.startButton.selected) {
+                paused = false;
+            }
+        } else if (menu.mousemoveOutOfStartButton(I.mousePosition)) {
+            menu.startButton.selected = false;        
         }
-        if (menu.mouseupOnStartButton(I.mouseupPosition) &&
-                menu.startButton.selected == true) {
-            paused = false; 
-        }
-		if(menu.mousedownOnMuteButton(I.mousedownPosition)) {
-			menu.muteButton.selected = !menu.muteButton.selected;
-		}
     }
 
     I.onKeydown = function(event) {
@@ -53,18 +57,37 @@ function Input(I) {
     }
 
     I.onMousedown = function(event) {
-        I.mousedownPosition.x = event.clientX - canvas.offsetLeft;
-        I.mousedownPosition.y = event.clientY - canvas.offsetTop;
+        mousedownPosition = I.getMouseCanvasPosition(event);
+        console.log(mousedownPosition);
+        if (menu.mousedownOnStartButton(mousedownPosition)) {
+            menu.startButton.selected = true;        
+        } else if (menu.mousedownOnMuteButton(mousedownPosition)) {
+            menu.muteButton.selected = !menu.muteButton.selected;
+            sounds.toggleSound();
+        }
     }
 
     I.onMouseup = function(event) {
-        I.mouseupPosition.x = event.clientX - canvas.offsetLeft;
-        I.mouseupPosition.y = event.clientY - canvas.offsetTop;
+        mouseupPosition = I.getMouseCanvasPosition(event);
+        if (menu.mouseupOnStartButton(mouseupPosition)) {
+            if (menu.startButton.selected) {
+                paused = false;
+            }
+        }
     }
 
     I.onMousemove = function(event) {
-        I.mouseCanvasPosition.x = event.clientX - canvas.offsetLeft;
-        I.mouseCanvasPosition.y = event.clientY - canvas.offsetTop;
+        mousePosition = I.getMouseCanvasPosition(event);
+        if (menu.mousemoveOutOfStartButton(mousePosition)) {
+            menu.startButton.selected = false;        
+        }
+    }
+
+    I.getMouseCanvasPosition = function(event) {
+        return {
+            x: event.clientX - canvas.offsetLeft,
+            y: event.clientY - canvas.offsetTop
+        }
     }
 
     return I;
