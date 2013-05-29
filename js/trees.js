@@ -3,7 +3,8 @@ function Trees(I) {
     I.all = [];
     I.size = 0;
     I.GRIDSIZE = 500;
-    I.TREESTOMAKE = 3;
+    I.TREESTOMAKE = 30;
+    I.CROWDFACTOR = I.GRIDSIZE/I.TREESTOMAKE * 2;
     I.STARTZ = ball.p.z + 190;
     I.gridSpawnedFor = -1;
 
@@ -19,8 +20,6 @@ function Trees(I) {
          * grid of the set
          */
         if (I.needToSpawnNextGrid(ball.p.z)) {
-            console.log(ball.p.z);
-            console.log('need to spawn for ' + (I.gridSpawnedFor + 1));
             I.gridSpawnedFor++;
             I.spawnGrid(I.gridSpawnedFor);
         }
@@ -31,11 +30,9 @@ function Trees(I) {
             return true;
         }
         var gridNum = I.getCurrentGridNum(ballZ);
-        console.log(gridNum);
-        if (ballZ - (I.GRIDSIZE * gridNum) >= 0.5 * I.GRIDSIZE) {
-            if (I.gridSpawnedFor < gridNum) {
-                return true;
-            }
+        var z = I.getBallZInGrid(ballZ, gridNum);
+        if (z > 100 && I.gridSpawnedFor <= gridNum) {
+            return true;
         }
         return false;
     }
@@ -44,19 +41,39 @@ function Trees(I) {
         return Math.floor((z - I.STARTZ) / I.GRIDSIZE);
     }
 
+    I.getBallZInGrid = function(ballZ, gridNum) {
+        return ball.p.z - I.STARTZ - gridNum * I.GRIDSIZE;
+    }
+
     I.spawnGrid = function(gridNum) {
-        //var z = I.STARTZ + gridNum * I.GRIDSIZE;
-        for (var i = 0; i < I.TREESTOMAKE; i++) {
-            var newX = Math.random() * 1000 - 500;
-            var newZ;
-            if (trees.size != 0) {
-                newZ = trees.all[trees.size-1].p.z +
-                    Math.random()*10;
-            } else {
-                newZ = I.STARTZ;
-            }
-            var tree = I.makeTree({x: newX, y: -newZ, z: newZ});
+        console.log(gridNum);
+        console.log(ball.p.z);
+        I.makeFirstTreeInGrid(gridNum);
+        for (var i = 1; i < I.TREESTOMAKE; i++) {
+            var x = I.getRandomX();
+            var z = I.getRandomZ(gridNum);
+            var tree = I.makeTree({x: x, y: -z, z: z});
             I.addTree(tree);
+        }
+    }
+
+    I.makeFirstTreeInGrid = function(num) {
+        return I.STARTZ + num * I.GRIDSIZE +
+            Math.random()*I.CROWDFACTOR;
+    }
+
+    I.getRandomX = function() {
+        return Math.random() * 1000 - 500;
+    }
+
+    I.getRandomZ = function(gridNum) {
+        if (trees.size == 0) {
+            return I.STARTZ + gridNum * I.GRIDSIZE +
+                Math.random()*I.CROWDFACTOR;
+        } else {
+            var furthestTree = trees.all[trees.size-1];
+            var zOfFurthestTree = furthestTree.p.z;
+            return zOfFurthestTree + Math.random()*I.CROWDFACTOR;
         }
     }
 
