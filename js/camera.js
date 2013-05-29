@@ -52,11 +52,20 @@ function Camera(I) {
     }
 
     I.goLeft = function(dt) {
-        this.p.x -= dt*sideSpeed;
-        //pdeb(this.p.x);
+        x = this.p.x - dt*sideSpeed;
+        if (x < -500) {
+            this.p.x = -500
+        } else {
+            this.p.x = x;
+        }
     }
     I.goRight = function(dt) {
-        this.p.x += dt * sideSpeed;
+        x = this.p.x + dt*sideSpeed;
+        if (x > 500) {
+            this.p.x = 500;
+        } else {
+            this.p.x = x;
+        }
     }
 
     return I;

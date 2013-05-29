@@ -18,12 +18,23 @@ function Ball(I) {
         renderer.drawSprite(this.sprite, this.p, 150, 150);
     }
 
+    // playing field is from x = [-500, 500]
     I.goLeft = function(dt) {
         x = this.p.x - dt*sideSpeed;
-        this.p.x = x;
+        if (x < -500) {
+            this.p.x = -500
+        } else {
+            this.p.x = x;
+        }
     }
+
     I.goRight = function(dt) {
-        this.p.x += dt * sideSpeed;
+        x = this.p.x + dt*sideSpeed;
+        if (x > 500) {
+            this.p.x = 500;
+        } else {
+            this.p.x = x;
+        }
     }
 
     return I;
