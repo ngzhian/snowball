@@ -1,68 +1,62 @@
 function Menu(I) {
-    I.options = [false];
+    // position of buttons are given from top left corner
     I.startButton = {
-        p: { x: 0, y: -210, z: 310 },
-        w: 200,
-        h: 60,
+        p: { x: (CANVAS_WIDTH-240)/2, y: 110 },
+        w: 240,
+        h: 72,
         src: 'img/start.png',
         srcSelected: 'img/start-pressed.png',
         selected: false
     }
 
     I.instructions = {
-        p: { x: -200, y: -550, z: 310 },
+        p: { x: (CANVAS_WIDTH-247)/2, y: 190 },
         w: 247,
         h: 60,
         src: 'img/instr.png',
     }
-		I.muteButton = {
-		p: {
-			x: 300,
-			y: -550,
-			z:310
-		},
-		w: 100,
-		h: 100,
-		src: 'img/instr.png',
-		selected: false
-	}
+
+    I.muteButton = {
+        p: { x: (CANVAS_WIDTH-30), y: 0 },
+        w: 30,
+        h: 30,
+        src: 'img/instr.png',
+        selected: false
+    }
 
     I.mousedownOnStartButton = function(mousedownPosition) {
         if (I.mouseIsOverButton(mousedownPosition, I.startButton)) {
             return true;
-                }
+        }
         return false;
     }
 
     I.mouseupOnStartButton = function(mouseupPosition) {
         if (I.mouseIsOverButton(mouseupPosition, I.startButton)) {
             return true;
-                }
+        }
         return false;
+    }
+
+    I.mousedownOnMuteButton = function(mousedownPosition) {
+        if (I.mouseIsOverButton(mousedownPosition, I.muteButton)) {
+            return true;
+        }
+        return false;
+    }
+
+    I.mousemoveOutOfStartButton = function(mousePosition) {
+        return !I.mousedownOnStartButton(mousePosition);
     }
 
     I.mouseIsOverButton = function(mousePos, button) {
         if (mousePos == undefined) {
             return false;
         }
-        var canvasMid = renderer.screenToCanvas(
-                camera.translatePoint(button.p));
-        return mousePos.x <= canvasMid.x + button.w/2 &&
-            mousePos.x >= canvasMid.x - button.w/2 &&
-            mousePos.y <= canvasMid.y + button.h/2 &&
-            mousePos.y >= canvasMid.y - button.h/2;
-    }
-
-    I.setSelected = function(idx) {
-        if (idx >= I.options.length) {
-            idx -= I.options.length;
-        } else if (idx < 0) {
-            idx += I.options.length;
-        }
-        for (var i = 0; i < I.options.length; i++) {
-            I.options[i] = false;
-        }
-        I.options[idx] = true;
+        return mousePos.x <= button.p.x + button.w &&
+            mousePos.x >= button.p.x &&
+            mousePos.y <= button.p.y + button.h &&
+            mousePos.y >= button.p.y;
     }
 
     I.startGameSelected = function() {

@@ -49,8 +49,8 @@ var camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
 var menu = Menu({});
 var ball = Ball({p: {x: 0, y: -530, z: 310}, w: 150, h: 150});
 var trees = Trees({});
-var sound = Sound({});
-/*
+var audioContext;
+var sounds = Sounds({}); /*
 trees.addTree(Tree({p: {x:190, y:-1120, z: 1120}, w: 50, h: 640}));
 trees.addTree(Tree({p: {x:-190, y:-2400, z: 2400}, w: 50, h: 640}));
 trees.addTree(Tree({p: {x:-190, y:-3300, z: 3300}, w: 50, h: 640}));
@@ -69,6 +69,7 @@ var prevZ = 0;
 
 function init() {
     lastTime = Date.now();
+    window.addEventListener('load', sounds.init, false);
     window.addEventListener('keydown', input.onKeydown);
     window.addEventListener('keyup', input.onKeyup);
     window.addEventListener('mousedown', input.onMousedown);
@@ -90,8 +91,8 @@ function main() {
 
 function update(dt) { 
     input.handleInput(dt);
+    sounds.update(dt);
     if (!paused) {
-		sounds.update(dt);
         trees.update(dt);
         ball.update(dt);
         camera.update(dt);
