@@ -58,7 +58,6 @@ function Input(I) {
 
     I.onMousedown = function(event) {
         mousedownPosition = I.getMouseCanvasPosition(event);
-        console.log(mousedownPosition);
         if (menu.mousedownOnStartButton(mousedownPosition)) {
             menu.startButton.selected = true;        
         } else if (menu.mousedownOnMuteButton(mousedownPosition)) {

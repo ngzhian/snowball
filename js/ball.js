@@ -6,10 +6,10 @@ function Ball(I) {
         frames: [3, 2, 1, 0],
         rate: 10,
         index: 0
-    });
+    })
 
     I.update = function(dt) {
-        this.sprite.update(dt)
+        this.sprite.update(dt);
         this.p.y -= dt * rollingSpeed;
         this.p.z += dt * rollingSpeed;
     }
@@ -18,10 +18,14 @@ function Ball(I) {
         renderer.drawSprite(this.sprite, this.p, 150, 150);
     }
 
+    I.outOfPlayingField = function(x) {
+        return x >= 500 || x <= -500;
+    }
+
     // playing field is from x = [-500, 500]
     I.goLeft = function(dt) {
         x = this.p.x - dt*sideSpeed;
-        if (x < -500) {
+        if (I.outOfPlayingField(x)) {
             this.p.x = -500
         } else {
             this.p.x = x;
@@ -30,7 +34,7 @@ function Ball(I) {
 
     I.goRight = function(dt) {
         x = this.p.x + dt*sideSpeed;
-        if (x > 500) {
+        if (I.outOfPlayingField(x)) {
             this.p.x = 500;
         } else {
             this.p.x = x;

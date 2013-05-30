@@ -37,35 +37,29 @@ resources.load([
         'img/snowballground.png',
         'img/instr.png',
         'img/start.png',
-        'img/start-pressed.png'
+        'img/start-pressed.png',
+        'img/game-over-sprite.png'
         ]);
 resources.onReady(init);
 
 var paused = true;
-var rollingSpeed = 0200;
-var sideSpeed = 1000;
+var rollingSpeed = 500;
+var sideSpeed = 1.75*rollingSpeed;
 var renderer = Renderer({});
 var camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
 var menu = Menu({});
 var ball = Ball({p: {x: 0, y: -530, z: 310}, w: 150, h: 150});
 var trees = Trees({});
 var audioContext;
-var sounds = Sounds({}); /*
-trees.addTree(Tree({p: {x:190, y:-1120, z: 1120}, w: 50, h: 640}));
-trees.addTree(Tree({p: {x:-190, y:-2400, z: 2400}, w: 50, h: 640}));
-trees.addTree(Tree({p: {x:-190, y:-3300, z: 3300}, w: 50, h: 640}));
-trees.addTree(Tree({p: {x:-290, y:-6000, z: 6000}, w: 50, h: 640}));
-trees.addTree(Tree({p: {x:-190, y:-4000, z: 4000}, w: 50, h: 640}));
-trees.addTree(Tree({p: {x:090, y:-1440, z: 1440}, w: 50, h: 640}));
-trees.addTree(Tree({p: {x:000, y:-8000, z: 8000}, w:50, h:640}));
-*/
-var field = Field({src: "img/bg with view.jpg"});
+var sounds = Sounds({});
+var field = Field({});
 var input = Input({});
 var collision = Collision({});
 var score;
 var prevX = 0;
 var prevY = 0;
 var prevZ = 0;
+var dead = false;
 
 function init() {
     lastTime = Date.now();
@@ -89,18 +83,62 @@ function main() {
     requestAnimFrame(main);
 };
 
+var gameover = GameOver({});
 function update(dt) { 
+    rollingSpeed += dt * 10;// max is 1500
+    sideSpeed = 1.5 * rollingSpeed;
     input.handleInput(dt);
     sounds.update(dt);
+    gameover.update(dt);
     if (!paused) {
         trees.update(dt);
         ball.update(dt);
+        field.update(dt);
         camera.update(dt);
-        collision.checkCollisionTree(ball,trees);
+        if (collision.checkCollisionTree(ball,trees)) {
+            dead = true;
+            paused = true;
+            gameover.index = 0;
+            // draw dead animation
+        }
         // update score
     } else {
         //paused;
     }
+}
+
+function GameOver(I) {
+    I.sprite = Sprite({
+        url: 'img/game-over-sprite.png',
+    pos: { x: 0, y: 0 },
+    size: { w: 960, h: 640 },
+    frames: [2, 0, 1, 2,2,2,2,2,2],
+    rate: 3,
+    index: 0,
+    loop: false
+    })
+    I.update = function(dt) {
+        this.sprite.update(dt)
+    }
+    I.draw = function() {
+        I.sprite.render(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    }
+    return I;
+}
+
+function reset() {
+    rollingSpeed = 500;
+    sideSpeed = 1.75*rollingSpeed;
+    camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
+    ball = Ball({p: {x: 0, y: -530, z: 310}, w: 150, h: 150});
+    trees = Trees({});
+    field = Field({});
+    input = Input({});
+    score = 0;
+    prevX = 0;
+    prevY = 0;
+    prevZ = 0;
+    dead = false;
 }
 
 function render() {
@@ -109,6 +147,7 @@ function render() {
     trees.draw();
     ball.draw();
     if (paused) {
+        gameover.draw();
         menu.draw();
     }
 }
