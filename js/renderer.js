@@ -75,12 +75,11 @@ function Renderer(I) {
         sprite.render(tl_p.x, tl_p.y, c_w, c_h);
     }
 
-    I.drawBackground = function(src) {
-        // quick fix
-        ctx.drawImage(resources.get('img/paranmic.jpg'), 0, 0, 3200, 1066,
-                0, -030, CANVAS_WIDTH*2, CANVAS_HEIGHT);
-        ctx.drawImage(resources.get('img/snowballground.png'), 0, 0, CANVAS_WIDTH,
-            CANVAS_HEIGHT);
+    I.drawBackground = function(layer) {
+        //console.log(layer);
+        ctx.drawImage(resources.get(layer.src),
+                layer.x, layer.y,
+                layer.dw, layer.dh);
     }
 
     return I;

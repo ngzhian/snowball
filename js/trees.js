@@ -2,16 +2,11 @@ function Trees(I) {
     // trees are in nearest to furthest order
     I.all = [];
     I.size = 0;
-    I.GRIDSIZE = 500;
-    I.TREESTOMAKE = 30;
+    I.GRIDSIZE = 4000;
+    I.TREESTOMAKE = 15;
     I.CROWDFACTOR = I.GRIDSIZE/I.TREESTOMAKE * 2;
     I.STARTZ = ball.p.z + 190;
     I.gridSpawnedFor = -1;
-
-    I.update = function(dt) {
-        I.removeOutOfViewTrees();
-        I.spawnTrees();
-    }
 
     I.spawnTrees = function() {
         /* Rules for spawning trees
@@ -105,6 +100,14 @@ function Trees(I) {
             I.all.splice(i, i+1);
             I.size--;
         }
+    }
+
+    I.update = function(dt) {
+        for (var i = I.size - 1; i >= 0; i--) {
+            trees.all[i].update(dt);
+        }
+        I.removeOutOfViewTrees();
+        I.spawnTrees();
     }
 
     I.draw = function() {

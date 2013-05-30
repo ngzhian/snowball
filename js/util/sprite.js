@@ -6,6 +6,9 @@ function Sprite(I) {
 
     I.render = function(dest_x, dest_y, dest_w, dest_h) {
         var i = Math.floor(this.index);
+        if (this.loop == false && i > this.frames.length) {
+            return;
+        }
         var frame = this.frames[i % this.frames.length];
         var draw_x = this.pos.x + (frame * this.size.w);
         var draw_y = this.pos.y;
