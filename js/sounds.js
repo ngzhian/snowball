@@ -28,7 +28,7 @@ function Sounds(I) {
         }
         request.send();
     }
-    I.loadBgSound('../sounds/test.mp3');
+    I.loadBgSound('../sounds/ambience.mp3');
 
     function audioGraph(audioData) {
         I.playSound(audioData);
@@ -39,7 +39,7 @@ function Sounds(I) {
         I.source.connect(audioContext.destination);
         I.source.buffer = I.buffer;
         I.source.loop = true;
-        I.source.start(0, I.pausedTime);
+        I.source.start(0);
     }
 
     I.stopSound = function() {
@@ -52,10 +52,8 @@ function Sounds(I) {
 
     I.toggleSound = function() {
         if (menu.muteButton.selected) {
-            console.log('playing');
             I.stopSound();
         } else {
-            console.log('stopping');
             I.playSound();
         }
     }
