@@ -37,7 +37,9 @@ resources.load([
         'img/snowballground.png',
         'img/instr.png',
         'img/start.png',
-        'img/start-pressed.png'
+        'img/start-pressed.png',
+		'img/nosound.png',
+		'img/sound.png'
         ]);
 resources.onReady(init);
 

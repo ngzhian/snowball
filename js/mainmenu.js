@@ -20,7 +20,8 @@ function Menu(I) {
         p: { x: (CANVAS_WIDTH-30), y: 0 },
         w: 30,
         h: 30,
-        src: 'img/instr.png',
+        src: 'img/sound.png',
+		srcSelected: 'img/nosound.png',
         selected: false
     }
 
@@ -91,7 +92,9 @@ function Menu(I) {
     }
 
     I.drawMuteButton = function() {
-        ctx.drawImage(resources.get(I.muteButton.src),
+		var src = I.muteButton.selected ?
+			I.muteButton.srcSelected : I.muteButton.src;
+        ctx.drawImage(resources.get(src),
                 I.muteButton.p.x,
                 I.muteButton.p.y,
                 I.muteButton.w,
