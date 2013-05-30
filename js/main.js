@@ -39,7 +39,7 @@ resources.load([
         'img/start.png',
         'img/start-pressed.png',
 		'img/nosound.png',
-		'img/sound.png'
+		'img/sound.png',
         'img/game-over-sprite.png'
         ]);
 resources.onReady(init);
