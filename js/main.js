@@ -100,7 +100,7 @@ function update(dt) {
         if (collision.checkCollisionTree(ball,trees)) {
             dead = true;
             paused = true;
-            gameover.index = 0;
+
             // draw dead animation
         }
         // update score
@@ -117,7 +117,7 @@ function GameOver(I) {
     frames: [2, 0, 1, 2,2,2,2,2,2],
     rate: 3,
     index: 0,
-    loop: false
+    loop: true
     })
     I.update = function(dt) {
         this.sprite.update(dt)
@@ -135,7 +135,7 @@ function reset() {
     ball = Ball({p: {x: 0, y: -530, z: 310}, w: 150, h: 150});
     trees = Trees({});
     field = Field({});
-    input = Input({});
+ 
     score = 0;
     prevX = 0;
     prevY = 0;
@@ -149,7 +149,13 @@ function render() {
     trees.draw();
     ball.draw();
     if (paused) {
+		if(dead) {
         gameover.draw();
+		gameover.index=0;
+		setTimeout(function() { reset(); menu.draw();}, 3000);
+
+		}
+		else
         menu.draw();
     }
 }

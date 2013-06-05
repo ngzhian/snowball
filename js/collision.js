@@ -10,6 +10,7 @@ function Collision(I) {
                     hit = true;
                     return;
                 }
+			
         }
         );
         prevZ=ball.p.z;
