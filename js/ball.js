@@ -8,14 +8,17 @@ function Ball(I) {
         index: 0
     })
 
+    I.originalRadius = I.r;
+
     I.update = function(dt) {
-        this.sprite.update(dt);
-        this.p.y -= dt * rollingSpeed;
-        this.p.z += dt * rollingSpeed;
+        I.sprite.update(dt);
+        I.p.y -= dt * rollingSpeed;
+        I.p.z += dt * rollingSpeed;
+        I.r = I.originalRadius + score.points/10;
     }
 
     I.draw = function() {
-        renderer.drawSprite(this.sprite, this.p, 150, 150);
+        renderer.drawSprite(I.sprite, I.p, I.r, I.r);
     }
 
     I.outOfPlayingField = function(x) {
@@ -24,20 +27,20 @@ function Ball(I) {
 
     // playing field is from x = [-500, 500]
     I.goLeft = function(dt) {
-        x = this.p.x - dt*sideSpeed;
+        x = I.p.x - dt*sideSpeed;
         if (I.outOfPlayingField(x)) {
-            this.p.x = -500
+            I.p.x = -500
         } else {
-            this.p.x = x;
+            I.p.x = x;
         }
     }
 
     I.goRight = function(dt) {
-        x = this.p.x + dt*sideSpeed;
+        x = I.p.x + dt*sideSpeed;
         if (I.outOfPlayingField(x)) {
-            this.p.x = 500;
+            I.p.x = 500;
         } else {
-            this.p.x = x;
+            I.p.x = x;
         }
     }
 

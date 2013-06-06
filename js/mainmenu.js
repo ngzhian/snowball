@@ -65,11 +65,9 @@ function Menu(I) {
     }
 
     I.draw = function() {
-        if (paused == true) {
-            I.drawStartButton();
-            I.drawInstructions();
-        }
-        I.drawMuteButton();
+        if (!paused) return;
+        I.drawStartButton();
+        I.drawInstructions();
     }
 
 

@@ -44,19 +44,19 @@ resources.load([
 resources.onReady(init);
 
 var paused = true;
-var rollingSpeed = 500;
+var rollingSpeed = 750;
 var sideSpeed = 1.75*rollingSpeed;
 var renderer = Renderer({});
 var camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
 var menu = Menu({});
-var ball = Ball({p: {x: 0, y: -530, z: 310}, w: 150, h: 150});
+var ball = Ball({p: {x: 0, y: -530, z: 310}, r: 150});
+var score = Score({});
 var trees = Trees({});
 var audioContext;
 var sounds = Sounds({});
 var field = Field({});
 var input = Input({});
 var collision = Collision({});
-var score;
 var prevX = 0;
 var prevY = 0;
 var prevZ = 0;
@@ -105,6 +105,7 @@ function update(dt) {
         sideSpeed = 1.5 * rollingSpeed;
         trees.update(dt);
         ball.update(dt);
+        score.update(dt);
         field.update(dt);
         camera.update(dt);
         if (collision.checkCollisionTree(ball,trees)) {
@@ -136,13 +137,13 @@ function GameOver(I) {
 }
 
 function reset() {
-    rollingSpeed = 500;
+    rollingSpeed = 750;
     sideSpeed = 1.75*rollingSpeed;
     camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
-    ball = Ball({p: {x: 0, y: -530, z: 310}, w: 150, h: 150});
+    ball = Ball({p: {x: 0, y: -530, z: 310}, r: 150});
+    score = Score({});
     trees = Trees({});
     field = Field({});
-    score = 0;
     prevX = 0;
     prevY = 0;
     prevZ = 0;
@@ -155,6 +156,8 @@ function render() {
     field.draw();
     trees.draw();
     ball.draw();
+    score.draw();
+    menu.drawMuteButton();
     if (dead) {
         gameover.draw();
     } else if (paused) {

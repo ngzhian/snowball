@@ -43,6 +43,7 @@ function Input(I) {
     I.onMousedown = function(event) {
         mousedownPosition = I.getMouseCanvasPosition(event);
         if (menu.mousedownOnStartButton(mousedownPosition)) {
+            if (!paused) return;
             menu.startButton.selected = true;        
         } else if (menu.mousedownOnMuteButton(mousedownPosition)) {
             menu.muteButton.selected = !menu.muteButton.selected;
@@ -51,12 +52,11 @@ function Input(I) {
     }
 
     I.onMouseup = function(event) {
-        if (dead) return;
         mouseupPosition = I.getMouseCanvasPosition(event);
         if (menu.mouseupOnStartButton(mouseupPosition)) {
+            if (dead || !paused) return;
             if (menu.startButton.selected) {
                 reset();
-                gameover.index = 0;
                 paused = false;
             }
         }

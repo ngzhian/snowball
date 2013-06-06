@@ -13,44 +13,6 @@ function Renderer(I) {
         return {x: x, y: y};
     }
 
-    I.drawRect = function(p, w, h, colour) {
-        // don't draw if object is behind camera!
-        // prevents divide by zero error in camera.translatePoint
-        if (p.z < camera.p.z) return;
-        // ! what is a good way to decide when to not paint?
-        // when it is out of horizontal view?
-        // trade off between checking if it is in view and
-        // just painting anyway.
-        screen_point = camera.translatePoint(p);
-        canvas_point = this.screenToCanvas(screen_point);
-        c_w = camera.scale(w, p.z);
-        c_h = camera.scale(h, p.z);
-        tl_p = I.toTopLeft(canvas_point, c_w, c_h);
-        //pdeb('print rect w:'+c_w+' h:'+c_h+' at ('+tl_p.x+','+tl_p.y+')');
-        ctx.beginPath();
-        ctx.rect(tl_p.x, tl_p.y, c_w, c_h);
-        ctx.fillStyle = colour;
-        ctx.fill();
-    }
-
-    I.drawRectWithBorder = function(p, w, h, colour) {
-        if (p.z < camera.p.z) return;
-        screen_point = camera.translatePoint(p);
-        canvas_point = this.screenToCanvas(screen_point);
-        c_w = camera.scale(w, p.z);
-        c_h = camera.scale(h, p.z);
-        tl_p = I.toTopLeft(canvas_point, c_w, c_h);
-        //pdeb('print rect w:'+c_w+' h:'+c_h+' at ('+tl_p.x+','+tl_p.y+')');
-        //ctx.fillRect(tl_p.x, tl_p.y, c_w, c_h);
-        ctx.beginPath();
-        ctx.rect(tl_p.x, tl_p.y, c_w, c_h);
-        ctx.fillStyle = colour;
-        ctx.fill();
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = 'black';
-        ctx.stroke();
-    }
-
     I.drawImage = function(p, w, h, src) {
         if (p.z < camera.p.z) return;
         screen_point = camera.translatePoint(p);
@@ -76,10 +38,15 @@ function Renderer(I) {
     }
 
     I.drawBackground = function(layer) {
-        //console.log(layer);
         ctx.drawImage(resources.get(layer.src),
                 layer.x, layer.y,
                 layer.dw, layer.dh);
+    }
+
+    I.drawText = function(text, x, y) {
+        ctx.font = "30px Trebuchet MS";
+        ctx.fillStyle = "#0a4c7e";
+        ctx.fillText(text, x, y);
     }
 
     return I;
