@@ -15,7 +15,6 @@ function Input(I) {
         if (!paused) {
             input.handleKeyboardInput(dt);
         }
-        //input.handleMouseInput(dt);
     }
 
     I.handleKeyboardInput = function(dt) {
@@ -31,21 +30,6 @@ function Input(I) {
 
     I.keyIsDown = function(keyCode) {
         return this.down[keyCode];
-    }
-
-    I.handleMouseInput = function(dt) {
-        if (menu.mousedownOnStartButton(I.mousedownPosition)) {
-            menu.startButton.selected = true;        
-        } else if (menu.mousedownOnMuteButton(I.mousedownPosition)) {
-            menu.muteButton.selected = !menu.muteButton.selected;
-            sounds.toggleSound();
-        } else if (menu.mouseupOnStartButton(I.mouseupPosition)) {
-            if (menu.startButton.selected) {
-                paused = false;
-            }
-        } else if (menu.mousemoveOutOfStartButton(I.mousePosition)) {
-            menu.startButton.selected = false;        
-        }
     }
 
     I.onKeydown = function(event) {
@@ -67,9 +51,12 @@ function Input(I) {
     }
 
     I.onMouseup = function(event) {
+        if (dead) return;
         mouseupPosition = I.getMouseCanvasPosition(event);
         if (menu.mouseupOnStartButton(mouseupPosition)) {
             if (menu.startButton.selected) {
+                reset();
+                gameover.index = 0;
                 paused = false;
             }
         }

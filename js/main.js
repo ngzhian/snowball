@@ -11,7 +11,6 @@ var requestAnimFrame = (function(){
 
 var CANVAS_WIDTH = 480;
 var CANVAS_HEIGHT = 320;
-//var canvas = jQuery('canvas');
 var canvas = document.getElementsByTagName('canvas')[0];
 var ctx = $(canvas).attr('width', CANVAS_WIDTH)
                         .attr('height', CANVAS_HEIGHT)
@@ -83,44 +82,52 @@ function main() {
 
     lastTime = now;
     requestAnimFrame(main);
+    //setTimeout(main, 100);
 };
 
 var gameover = GameOver({});
+var deadTime = 0;
 function update(dt) { 
-    rollingSpeed += dt * 10;// max is 1500
-    sideSpeed = 1.5 * rollingSpeed;
     input.handleInput(dt);
     sounds.update(dt);
-    gameover.update(dt);
-    if (!paused) {
+    if (isDead()) {
+        deadTime += dt;
+        if (deadTime > 3) {
+            dead = false;
+            gameover = GameOver({});
+            deadTime = 0;
+            return;
+        }
+        gameover.update(dt);
+    } else if (paused) {
+    } else {
+        rollingSpeed += dt * 10;// max is 1500
+        sideSpeed = 1.5 * rollingSpeed;
         trees.update(dt);
         ball.update(dt);
         field.update(dt);
         camera.update(dt);
         if (collision.checkCollisionTree(ball,trees)) {
-            dead = true;
-            paused = true;
-
-            // draw dead animation
+            die();
         }
-        // update score
-    } else {
-        //paused;
     }
 }
+
+function die() { dead = true; paused = true;}
+function isDead() { return dead == true; }
 
 function GameOver(I) {
     I.sprite = Sprite({
         url: 'img/game-over-sprite.png',
     pos: { x: 0, y: 0 },
     size: { w: 960, h: 640 },
-    frames: [2, 0, 1, 2,2,2,2,2,2],
+    frames: [0, 0, 1, 1,2,2,2,2,2],
     rate: 3,
     index: 0,
-    loop: true
+    loop: false
     })
     I.update = function(dt) {
-        this.sprite.update(dt)
+        this.sprite.update(dt);
     }
     I.draw = function() {
         I.sprite.render(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -135,12 +142,12 @@ function reset() {
     ball = Ball({p: {x: 0, y: -530, z: 310}, w: 150, h: 150});
     trees = Trees({});
     field = Field({});
- 
     score = 0;
     prevX = 0;
     prevY = 0;
     prevZ = 0;
     dead = false;
+    console.log('reset');
 }
 
 function render() {
@@ -148,14 +155,9 @@ function render() {
     field.draw();
     trees.draw();
     ball.draw();
-    if (paused) {
-		if(dead) {
+    if (dead) {
         gameover.draw();
-		gameover.index=0;
-		setTimeout(function() { reset(); menu.draw();}, 3000);
-
-		}
-		else
+    } else if (paused) {
         menu.draw();
     }
 }
