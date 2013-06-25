@@ -20,7 +20,6 @@ function Renderer(I) {
         c_w = camera.scale(w, p.z);
         c_h = camera.scale(h, p.z);
         tl_p = I.toTopLeft(canvas_point, c_w, c_h);
-        //pdeb('draw image w:'+c_w+' h:'+c_h+' at ('+tl_p.x+','+tl_p.y+')');
         ctx.drawImage(resources.get(src), tl_p.x, tl_p.y, c_w, c_h);
     }
 

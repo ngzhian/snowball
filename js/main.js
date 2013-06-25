@@ -32,7 +32,8 @@ resources.load([
         'img/start-pressed.png',
 		'img/nosound.png',
 		'img/sound.png',
-        'img/game-over-sprite.png'
+        'img/game-over-sprite.png',
+        'img/spike.png'
         ]);
 resources.onReady(init);
 
@@ -45,6 +46,7 @@ var menu = Menu({});
 var ball = Ball({p: {x: 0, y: -530, z: 310}, r: 150});
 var score = Score({});
 var trees = Trees({});
+var spikes = Spikes({});
 var audioContext;
 var sounds = Sounds({});
 var field = Field({});
@@ -96,6 +98,7 @@ function update(dt) {
         rollingSpeed += dt * 10;// max is 1500
         sideSpeed = 1.5 * rollingSpeed;
         trees.update(dt);
+        spikes.update(dt);
         ball.update(dt);
         score.update(dt);
         field.update(dt);
@@ -114,6 +117,7 @@ function reset() {
     ball = Ball({p: {x: 0, y: -530, z: 310}, r: 150});
     score = Score({});
     trees = Trees({});
+    spikes = Spikes({});
     field = Field({});
     prevX = 0;
     prevY = 0;
@@ -125,6 +129,7 @@ function reset() {
 function render() {
     ctx.clearRect(0, 0, 480, 320);
     field.draw();
+    spikes.draw();
     trees.draw();
     ball.draw();
     score.draw();
