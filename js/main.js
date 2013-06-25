@@ -17,13 +17,6 @@ var ctx = $(canvas).attr('width', CANVAS_WIDTH)
                         .css('border', '1px solid black')
                         .get(0).getContext("2d");
 var lastTime;
-var debug = false;
-
-function pdeb(str) {
-    if (debug) {
-        console.log(str);
-    }
-}
 
 resources.load([
         'img/bg.jpg',
@@ -61,6 +54,8 @@ var prevX = 0;
 var prevY = 0;
 var prevZ = 0;
 var dead = false;
+var deadTime = 0;
+var gameover = GameOver({});
 
 function init() {
     lastTime = Date.now();
@@ -82,15 +77,12 @@ function main() {
 
     lastTime = now;
     requestAnimFrame(main);
-    //setTimeout(main, 100);
 };
 
-var gameover = GameOver({});
-var deadTime = 0;
 function update(dt) { 
     input.handleInput(dt);
     sounds.update(dt);
-    if (isDead()) {
+    if (dead) {
         deadTime += dt;
         if (deadTime > 3) {
             dead = false;
@@ -109,31 +101,10 @@ function update(dt) {
         field.update(dt);
         camera.update(dt);
         if (collision.checkCollisionTree(ball,trees)) {
-            die();
+            dead = true;
+            paused = true;
         }
     }
-}
-
-function die() { dead = true; paused = true;}
-function isDead() { return dead == true; }
-
-function GameOver(I) {
-    I.sprite = Sprite({
-        url: 'img/game-over-sprite.png',
-    pos: { x: 0, y: 0 },
-    size: { w: 960, h: 640 },
-    frames: [0, 0, 1, 1,2,2,2,2,2],
-    rate: 3,
-    index: 0,
-    loop: false
-    })
-    I.update = function(dt) {
-        this.sprite.update(dt);
-    }
-    I.draw = function() {
-        I.sprite.render(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    }
-    return I;
 }
 
 function reset() {
