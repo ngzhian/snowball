@@ -85,61 +85,72 @@
         </script>
     </head>
     <body>
-        <div id="fb-root"></div>
-        <script>
+        <script type="text/javascript">
+            var fbAppId = '672588829422540';
+            var objectToLike = 'http://ngzhian.github.io/snowball';
+
             window.fbAsyncInit = function() {
                 FB.init({
-                    appId      : '672588829422540', // App ID
-                    channelUrl : '//ngzhian.github.io/snowball/channel.html', // Channel File
-                    status     : true, // check login status
-                    cookie     : true, // enable cookies to allow the server to access the session
-                    xfbml      : true  // parse XFBML
-                });
+appId      : fbAppId,        // App ID
+status     : true,           // check login status
+cookie     : true,           // enable cookies to allow the server to access the session
+xfbml      : true            // parse page for xfbml or html5 social plugins like login button below
+});
+};
 
-                FB.Event.subscribe('auth.authResponseChange', function(response) {
-                    if (response.status === 'connected') {
-                        testAPI();
-                        } else if (response.status === 'not_authorized') {
-                        FB.login();
-                        } else {
-                        FB.login();
-                    }
-                });
-            };
+// Load the SDK Asynchronously
+(function(d, s, id){
+ var js, fjs = d.getElementsByTagName(s)[0];
+ if (d.getElementById(id)) {return;}
+ js = d.createElement(s); js.id = id;
+ js.src = "//connect.facebook.net/en_US/all.js";
+ fjs.parentNode.insertBefore(js, fjs);
+ }(document, 'script', 'facebook-jssdk'));
 
-            (function(d){
-                var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-                if (d.getElementById(id)) {return;}
-                js = d.createElement('script'); js.id = id; js.async = true;
-                js.src = "//connect.facebook.net/en_US/all.js";
-                ref.parentNode.insertBefore(js, ref);
-            }(document));
+function postLike() {
+    FB.api(
+            'https://graph.facebook.com/me/og.likes',
+            'post',
+            { object: objectToLike,
+privacy: {'value': 'SELF'} },
+function(response) {
+if (!response) {
+alert('Error occurred.');
+} else if (response.error) {
+document.getElementById('result').innerHTML = 'Error: ' + response.error.message;
+} else {
+document.getElementById('result').innerHTML =
+'<a href=\"https://www.facebook.com/me/activity/' + response.id + '\">' +
+'Story created.  ID is ' + response.id + '</a>';
+}
+}
+);
+    }
+</script>
+<!--<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>-->
+<div
+    class="fb-login-button"
+    data-show-faces="true"
+    data-width="200"
+    data-max-rows="1"
+    data-scope="publish_actions">
+</div>
 
-            function testAPI() {
-                console.log('Welcome!  Fetching your information.... ');
-                FB.api('/me', function(response) {
-                    console.log('Good to see you, ' + response.name + '.');
-                });
-                userId = FB.getUserID();
-            }
-        </script>
-        <fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
-
-        <a href="https://github.com/ngzhian/snowball"><img style="position: absolute; top: 0; right: 30px; border: 0;" src="https://github.com/jamesflorentino/fork-ribbons/raw/master/ribbons/blue-white.png" alt="Fork me on GitHub"></a>
-        <div id="header">
-            <h1>Snowball</h1>
-            <h2>By Chris and Zhi An</h2>
-        </div>
-        <div id="canvas_container">
-            <canvas></canvas>
-        </div>
-        <div id="tweaks">
-            <h2>Tweaks</h2>
-            <span>camera angle: </span><div id="angle"></div>
-            <span>rolling speed: </span><div id="speed"></div>
-            <span>camera depth: </span><div id="depth"></div>
-        </div>
-        <script type="text/javascript" src="js/main.js">
-        </script>
+<a href="https://github.com/ngzhian/snowball"><img style="position: absolute; top: 0; right: 30px; border: 0;" src="https://github.com/jamesflorentino/fork-ribbons/raw/master/ribbons/blue-white.png" alt="Fork me on GitHub"></a>
+<div id="header">
+    <h1>Snowball</h1>
+    <h2>By Chris and Zhi An</h2>
+</div>
+<div id="canvas_container">
+    <canvas></canvas>
+</div>
+<div id="tweaks">
+    <h2>Tweaks</h2>
+    <span>camera angle: </span><div id="angle"></div>
+    <span>rolling speed: </span><div id="speed"></div>
+    <span>camera depth: </span><div id="depth"></div>
+</div>
+<script type="text/javascript" src="js/main.js">
+</script>
     </body>
 </html>
