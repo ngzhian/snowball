@@ -29,7 +29,7 @@ function Score(I) {
     }
 
     I.update_high_score = function() {
-        prev = I.get_previous_high_score;
+        prev = I.get_previous_high_score();
         if (prev == null || prev < Math.floor(I.points)) {
             localStorage["highscore"] = Math.floor(I.points);
         }
