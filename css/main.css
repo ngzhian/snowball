@@ -1,0 +1,16 @@
+body {
+    background:#ffffff url('../img/site_background.jpg') no-repeat left fixed;
+}
+
+#header {
+    background: rgba(230, 230, 230, 0.5);
+}
+
+#canvas_container {
+    margin: auto;
+    width: 480px;
+}
+
+#tweaks {
+    background: rgba(230, 230, 230, 0.5);
+}

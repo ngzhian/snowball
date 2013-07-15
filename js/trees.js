@@ -2,7 +2,7 @@ function Trees(I) {
     // trees are in nearest to furthest order
     I.all = [];
     I.size = 0;
-    I.GRIDSIZE = 4000;
+    I.GRIDSIZE = 5000;
     I.TREESTOMAKE = 15;
     I.CROWDFACTOR = I.GRIDSIZE/I.TREESTOMAKE * 2;
     I.STARTZ = ball.p.z + 190;

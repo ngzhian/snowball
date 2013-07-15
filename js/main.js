@@ -41,7 +41,7 @@ var paused = true;
 var rollingSpeed = 750;
 var sideSpeed = 1.75*rollingSpeed;
 var renderer = Renderer({});
-var camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
+var camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 210});
 var menu = Menu({});
 var ball = Ball({p: {x: 0, y: -530, z: 310}, r: 150});
 var score = Score({});
@@ -113,7 +113,7 @@ function update(dt) {
 function reset() {
     rollingSpeed = 750;
     sideSpeed = 1.75*rollingSpeed;
-    camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
+    camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 210});
     ball = Ball({p: {x: 0, y: -530, z: 310}, r: 150});
     score = Score({});
     trees = Trees({});
