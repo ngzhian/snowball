@@ -10,7 +10,7 @@ function Collision(I) {
                     hit = true;
                     return;
                 }
-			
+
         }
         );
         golems.all.forEach(function(golem) {
@@ -30,6 +30,26 @@ function Collision(I) {
         prevY=ball.p.y;
         return hit;
     }
-    
+
+    I.checkCollisionCoin = function(ball, coins) {
+        var hit;
+        coins.all.forEach(function(coin) {
+            if(ball.p.z-200 > coin.p.z &&
+                coinPrevZ-200 < coin.p.z &&
+                Math.abs((ball.p.x + coinPrevX)/2-coin.p.x) < 30 &&
+                Math.abs((ball.p.y + coinPrevY)/2-(coin.p.y-coin.h/2)) < 110) {
+                    console.log("hit");
+                    hit = true;
+                    return;
+                }
+
+        }
+        );
+        coinPrevZ=ball.p.z;
+        coinPrevX=ball.p.x;
+        coinPrevY=ball.p.y;
+        return hit;
+    }
+
     return I;
 }

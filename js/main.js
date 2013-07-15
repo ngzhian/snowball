@@ -42,7 +42,7 @@ var paused = true;
 var rollingSpeed = 750;
 var sideSpeed = 1.75*rollingSpeed;
 var renderer = Renderer({});
-var camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
+var camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 210});
 var menu = Menu({});
 var ball = Ball({p: {x: 0, y: -530, z: 290}, r: 100});
 var score = Score({});
@@ -87,6 +87,7 @@ function update(dt) {
     input.handleInput(dt);
     sounds.update(dt);
     if (dead) {
+        score.update_high_score();
         deadTime += dt;
         if (deadTime > 3) {
             dead = false;
@@ -116,7 +117,7 @@ function update(dt) {
 function reset() {
     rollingSpeed = 750;
     sideSpeed = 1.75*rollingSpeed;
-    camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
+    camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 210});
     ball = Ball({p: {x: 0, y: -530, z: 290}, r: 100});
     score = Score({});
     trees = Trees({});
