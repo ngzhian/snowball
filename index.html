@@ -41,126 +41,35 @@
         </script>
         <script type="text/javascript" src="js/score.js">
         </script>
-        <script>
-            function changeAngle() {
-                console.log(camera.angle);
-                var angle = $( "#angle" ).slider( "value" );
-                var radians = angle * Math.PI / 180;
-                camera.angle = radians;
-            }
-            function changeSpeed() {
-                //  console.log(rollingSpeed);
-                rollingSpeed = $('#speed').slider('value');
-            }
-            function changeDepth() {
-                console.log(camera.depth);
-                camera.depth = $('#depth').slider('value');
-            }
-            $(function() {
-                $("#angle").slider({
-                    orientation: "horizontal",
-                    range: "min",
-                    max: 90,
-                    value: 20,
-                    slide: changeAngle,
-                    change: changeAngle
-                });
-                $('#speed').slider({
-                    orientation: "horizontal",
-                    range: "min",
-                    max: 10000,
-                    value: 300,
-                    slide: changeSpeed,
-                    change: changeSpeed
-                });
-                $('#depth').slider({
-                    orientation: "horizontal",
-                    range: "min",
-                    max: 2000,
-                    value: 200,
-                    slide: changeDepth,
-                    change: changeDepth
-                });
-            });
+        <script type="text/javascript" src="js/tweaks.js">
         </script>
     </head>
     <body>
-        <script type="text/javascript">
-            var fbAppId = '672588829422540';
-            var objectToLike = 'http://ngzhian.github.io/snowball';
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=672588829422540";
+            fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="http://ngzhian.github.io/snowball/" data-send="true" data-width="450" data-show-faces="true"></div>
 
-            window.fbAsyncInit = function() {
-                FB.init({
-appId      : '672588829422540',        // App ID
-status     : true,           // check login status
-cookie     : true,           // enable cookies to allow the server to access the session
-xfbml      : true            // parse page for xfbml or html5 social plugins like login button below
-});
-};
-
-// Load the SDK Asynchronously
-(function(d, s, id){
- var js, fjs = d.getElementsByTagName(s)[0];
- if (d.getElementById(id)) {return;}
- js = d.createElement(s); js.id = id;
- js.src = "//connect.facebook.net/en_US/all.js";
- fjs.parentNode.insertBefore(js, fjs);
- }(document, 'script', 'facebook-jssdk'));
-
-function postLike() {
-    FB.api(
-            'https://graph.facebook.com/me/og.likes',
-            'post',
-            { object: objectToLike,
-privacy: {'value': 'SELF'} },
-function(response) {
-if (!response) {
-alert('Error occurred.');
-} else if (response.error) {
-document.getElementById('result').innerHTML = 'Error: ' + response.error.message;
-} else {
-document.getElementById('result').innerHTML =
-'<a href=\"https://www.facebook.com/me/activity/' + response.id + '\">' +
-'Story created.  ID is ' + response.id + '</a>';
-}
-}
-);
-    }
-
-</script>
-<!--<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>-->
-<div
-    class="fb-login-button"
-    data-show-faces="true"
-    data-width="200"
-    data-max-rows="1"
-    data-scope="publish_actions">
-</div>
-<div>
-This example creates a story on Facebook using the <a href="https://developers.facebook.com/docs/reference/ogaction/og.likes"><code>og.likes</code></a> API.  That story will just say that you like an <a href="http://techcrunch.com/2013/02/06/facebook-launches-developers-live-video-channel-to-keep-its-developer-ecosystem-up-to-date/">article on TechCrunch</a>.  The story should only be visible to you.
-</div>
-
-<div>
-<input type="button" value="Create a story with an og.likes action" onclick="postLike();">
-</div>
-
-<div id="result"></div>
-
-<a href="https://github.com/ngzhian/snowball"><img style="position: absolute; top: 0; right: 30px; border: 0;" src="https://github.com/jamesflorentino/fork-ribbons/raw/master/ribbons/blue-white.png" alt="Fork me on GitHub"></a>
-<div id="header">
-    <h1>Snowball</h1>
-    <h2>By Chris and Zhi An</h2>
-</div>
-<div id="canvas_container">
-    <canvas></canvas>
-</div>
-<div id="tweaks">
-    <h2>Tweaks</h2>
-    <span>camera angle: </span><div id="angle"></div>
-    <span>rolling speed: </span><div id="speed"></div>
-    <span>camera depth: </span><div id="depth"></div>
-</div>
-<script type="text/javascript" src="js/main.js">
-</script>
+        <a href="https://github.com/ngzhian/snowball"><img style="position: absolute; top: 0; right: 30px; border: 0;" src="https://github.com/jamesflorentino/fork-ribbons/raw/master/ribbons/blue-white.png" alt="Fork me on GitHub"></a>
+        <div id="header">
+            <h1>Snowball</h1>
+            <h2>By Chris and Zhi An</h2>
+        </div>
+        <div id="canvas_container">
+            <canvas></canvas>
+        </div>
+        <div id="tweaks">
+            <h2>Tweaks</h2>
+            <span>camera angle: </span><div id="angle"></div>
+            <span>rolling speed: </span><div id="speed"></div>
+            <span>camera depth: </span><div id="depth"></div>
+        </div>
+        <script type="text/javascript" src="js/main.js">
+        </script>
     </body>
 </html>
