@@ -25,6 +25,7 @@ resources.load([
         'img/snowball1.png',
         'img/ball-sprite.png',
         'img/tree-sprite.png',
+		'img/golem-sprite.png',
         'img/paranmic.jpg',
         'img/snowballground.png',
         'img/instr.png',
@@ -43,9 +44,10 @@ var sideSpeed = 1.75*rollingSpeed;
 var renderer = Renderer({});
 var camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
 var menu = Menu({});
-var ball = Ball({p: {x: 0, y: -530, z: 310}, r: 150});
+var ball = Ball({p: {x: 0, y: -530, z: 290}, r: 100});
 var score = Score({});
 var trees = Trees({});
+var golems = Golems({});
 var spikes = Spikes({});
 var audioContext;
 var sounds = Sounds({});
@@ -98,12 +100,13 @@ function update(dt) {
         rollingSpeed += dt * 10;// max is 1500
         sideSpeed = 1.5 * rollingSpeed;
         trees.update(dt);
+		golems.update(dt);
         spikes.update(dt);
         ball.update(dt);
         score.update(dt);
         field.update(dt);
         camera.update(dt);
-        if (collision.checkCollisionTree(ball,trees)) {
+        if (collision.checkCollision(ball, trees, golems)) {
             dead = true;
             paused = true;
         }
@@ -114,9 +117,10 @@ function reset() {
     rollingSpeed = 750;
     sideSpeed = 1.75*rollingSpeed;
     camera = Camera({p: {x: 0, y: 0, z: 0}, angle: 0.32, depth: 200});
-    ball = Ball({p: {x: 0, y: -530, z: 310}, r: 150});
+    ball = Ball({p: {x: 0, y: -530, z: 290}, r: 100});
     score = Score({});
     trees = Trees({});
+	golems = Golems({});
     spikes = Spikes({});
     field = Field({});
     prevX = 0;
@@ -131,6 +135,7 @@ function render() {
     field.draw();
     spikes.draw();
     trees.draw();
+	golems.draw();
     ball.draw();
     score.draw();
     menu.drawMuteButton();
