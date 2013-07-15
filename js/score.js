@@ -13,7 +13,7 @@ function Score(I) {
     I.draw = function() {
         if (dead || paused) {
             renderer.drawText('High Score: ' + 
-                    I.get_previous_high_score() | '0', 10, 30);
+                    I.get_previous_high_score(), 10, 30);
         } else {
             renderer.drawText(Math.floor(I.points), 10, 30);
         }
@@ -37,7 +37,11 @@ function Score(I) {
 
     I.get_previous_high_score = function() {
         if (I.has_local_storage()) {
-            return localStorage["highscore"];
+            if (localStorage["highscore"] == undefined) {
+                return 0;
+            } else {
+                return localStorage["highscore"];
+            }
         }
     }
 
