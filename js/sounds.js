@@ -28,7 +28,7 @@ function Sounds(I) {
         }
         request.send();
     }
-    I.loadBgSound('../sounds/ambience.mp3');
+    I.loadBgSound('https://github.com/ngzhian/snowball/raw/master/sounds/ambience.mp3');
 
     function audioGraph(audioData) {
         I.playSound(audioData);
