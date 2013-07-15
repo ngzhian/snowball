@@ -85,6 +85,7 @@ function update(dt) {
     input.handleInput(dt);
     sounds.update(dt);
     if (dead) {
+        score.update_high_score();
         deadTime += dt;
         if (deadTime > 3) {
             dead = false;
