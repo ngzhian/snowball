@@ -135,8 +135,9 @@ function render() {
     ctx.clearRect(0, 0, 480, 320);
     field.draw();
     spikes.draw();
-    trees.draw();
-	golems.draw();
+	renderer.drawObstacles(trees, golems);
+//    trees.draw();
+//	golems.draw();
     ball.draw();
     score.draw();
     menu.drawMuteButton();

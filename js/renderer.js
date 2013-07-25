@@ -35,7 +35,39 @@ function Renderer(I) {
         // to provide destination position and size
         sprite.render(tl_p.x, tl_p.y, c_w, c_h);
     }
+	
+	I.drawObstacles = function(trees, golems) {
+		var i = trees.size - 1, j = golems.size - 1;
+		while(i >= 0 || j >= 0) {
+			if(j >= 0 && i >= 0) {
+				if(trees.all[i].p.z > golems.all[j].p.z ) {
+					trees.all[i].draw();
+					i--;
+				}
+				else {
+					golems.all[j].draw();
+					j--;
+				}
+			}
+			else if(j >= 0){
+				golems.all[j].draw();
+				j--;
+			}
+			else if(i >= 0) {
+				trees.all[i].draw();
+				i--;
+			}				
+		}
+	}
+//		for(i;i >= 0; i--) {
+	//		trees.all[i].draw();
+	//	}
+	//	for(j;j >= 0; j--) {
+	//		golems.all[j].draw();
+	//	}
 
+	
+	
     I.drawBackground = function(layer) {
         ctx.drawImage(resources.get(layer.src),
                 layer.x, layer.y,
